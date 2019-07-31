@@ -138,7 +138,7 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 
     setting  = @"StatusBarOverlaysWebView";
     if([self settingForKey:setting]) {
-        [self setStatusBarOverlaysWebView:[self settingForKey:setting]];
+        [self setStatusBarOverlaysWebView:[[self settingForKey:setting] boolValue];
     }
 
     setting  = @"StatusBarDefaultScrollToTop";
