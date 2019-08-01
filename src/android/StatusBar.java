@@ -25,6 +25,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.content.Context;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaArgs;
@@ -74,7 +75,7 @@ public class StatusBar extends CordovaPlugin {
             }
         });
     }
-
+    
     /**
      * Executes the request and returns PluginResult.
      *
@@ -88,10 +89,20 @@ public class StatusBar extends CordovaPlugin {
         LOG.v(TAG, "Executing action: " + action);
         final Activity activity = this.cordova.getActivity();
         final Window window = activity.getWindow();
+        final Context context = window.getContext();
 
         if ("_ready".equals(action)) {
             boolean statusBarVisible = (window.getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == 0;
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, statusBarVisible));
+            return true;
+        }
+
+        if("getStatusBarHeight".equals(action)) {
+            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                callbackContext.success(context.getResources().getDimensionPixelSize(resourceId));
+            }
+    
             return true;
         }
 
