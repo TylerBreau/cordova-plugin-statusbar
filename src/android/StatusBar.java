@@ -197,6 +197,7 @@ public class StatusBar extends CordovaPlugin {
     }
 
     private void showStatusBar() {
+        Window window = cordova.getActivity().getWindow();
         // SYSTEM_UI_FLAG_FULLSCREEN is available since JellyBean, but we
         // use KitKat here to be aligned with "Fullscreen"  preference
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -213,6 +214,7 @@ public class StatusBar extends CordovaPlugin {
     }
 
     private void hideStatusBar() {
+        Window window = cordova.getActivity().getWindow();
         // SYSTEM_UI_FLAG_FULLSCREEN is available since JellyBean, but we
         // use KitKat here to be aligned with "Fullscreen"  preference
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
