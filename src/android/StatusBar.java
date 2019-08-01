@@ -98,10 +98,11 @@ public class StatusBar extends CordovaPlugin {
         }
 
         if("getStatusBarHeight".equals(action)) {
-            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                callbackContext.success(context.getResources().getDimensionPixelSize(resourceId));
-            }
+            callbackContext.success(context.getResources().getIdentifier("status_bar_height", "dimen", "android"));
+            // int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+            // if (resourceId > 0) {
+            //     callbackContext.success(context.getResources().getDimensionPixelSize(resourceId));
+            // }
     
             return true;
         }
