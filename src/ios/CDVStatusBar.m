@@ -126,6 +126,17 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 
     NSString* setting;
 
+    setting  = @"StatusBarDisplayState";
+    if([self settingForKey:setting]) {
+        if([[[self settingForKey:setting] lowercaseString] isEqualToString:@"show"]) {
+            [self show];
+        } else {
+            [self hide];
+        }
+    } else {
+        [self show];
+    }
+
     setting  = @"StatusBarBackgroundColor";
     if ([self settingForKey:setting]) {
         [self _backgroundColorByHexString:[self settingForKey:setting]];
