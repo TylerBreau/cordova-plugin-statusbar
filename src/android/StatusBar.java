@@ -34,8 +34,11 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.LOG;
 import org.apache.cordova.PluginResult;
+
 import org.json.JSONException;
+
 import java.util.Arrays;
+import java.lang.Math;
 
 public class StatusBar extends CordovaPlugin {
     private static final String TAG = "StatusBar";
@@ -101,7 +104,7 @@ public class StatusBar extends CordovaPlugin {
             int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
                 //callbackContext.success(context.getResources().getDimensionPixelSize(resourceId));
-                callbackContext.success(activity.getResources().getDimension(resourceId) / activity.getResources().getDisplayMetrics().density);
+                callbackContext.success(Math.ceil(activity.getResources().getDimension(resourceId) / activity.getResources().getDisplayMetrics().density));
             }
     
             return true;
