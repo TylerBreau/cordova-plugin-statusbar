@@ -196,9 +196,9 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     }
 }
 
-- (CGFloat) getStatusBarHeight
+- (void) getStatusBarHeight:(CDVInvokedUrlCommand*)command 
 {
-    return [[UIApplication sharedApplication] statusBarFrame].size.height;
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:Int(ceil([[UIApplication sharedApplication] statusBarFrame].size.height))]]
 }
 
 - (void) initializeStatusBarBackgroundView
