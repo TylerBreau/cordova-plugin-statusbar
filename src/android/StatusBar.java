@@ -63,13 +63,6 @@ public class StatusBar extends CordovaPlugin {
                 Window window = cordova.getActivity().getWindow();
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
-                // Read 'StatusBarDisplayState' from config.xml, default is show
-                if(preferences.getString("StatusBarDisplayState", "show").toLowerCase().equals("show")) {
-                    showStatusBar();
-                } else {
-                    hideStatusBar();
-                }
-
                 // Read 'StatusBarBackgroundColor' from config.xml, default is #000000.
                 setStatusBarBackgroundColor(preferences.getString("StatusBarBackgroundColor", "#000000"));
 
@@ -106,7 +99,19 @@ public class StatusBar extends CordovaPlugin {
             this.cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    showStatusBar();
+                    // SYSTEM_UI_FLAG_FULLSCREEN is available since JellyBean, but we
+                    // use KitKat here to be aligned with "Fullscreen"  preference
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        int uiOptions = window.getDecorView().getSystemUiVisibility();
+                        uiOptions &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+                        uiOptions &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
+
+                        window.getDecorView().setSystemUiVisibility(uiOptions);
+                    }
+
+                    // CB-11197 We still need to update LayoutParams to force status bar
+                    // to be hidden when entering e.g. text fields
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 }
             });
             return true;
@@ -116,7 +121,19 @@ public class StatusBar extends CordovaPlugin {
             this.cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    hideStatusBar();
+                    // SYSTEM_UI_FLAG_FULLSCREEN is available since JellyBean, but we
+                    // use KitKat here to be aligned with "Fullscreen"  preference
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        int uiOptions = window.getDecorView().getSystemUiVisibility()
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+
+                        window.getDecorView().setSystemUiVisibility(uiOptions);
+                    }
+
+                    // CB-11197 We still need to update LayoutParams to force status bar
+                    // to be hidden when entering e.g. text fields
+                    window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 }
             });
             return true;
@@ -194,40 +211,6 @@ public class StatusBar extends CordovaPlugin {
         }
 
         return false;
-    }
-
-    private void showStatusBar() {
-        Window window = cordova.getActivity().getWindow();
-        // SYSTEM_UI_FLAG_FULLSCREEN is available since JellyBean, but we
-        // use KitKat here to be aligned with "Fullscreen"  preference
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int uiOptions = window.getDecorView().getSystemUiVisibility();
-            uiOptions &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-            uiOptions &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
-
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
-
-        // CB-11197 We still need to update LayoutParams to force status bar
-        // to be hidden when entering e.g. text fields
-        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
-
-    private void hideStatusBar() {
-        Window window = cordova.getActivity().getWindow();
-        // SYSTEM_UI_FLAG_FULLSCREEN is available since JellyBean, but we
-        // use KitKat here to be aligned with "Fullscreen"  preference
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int uiOptions = window.getDecorView().getSystemUiVisibility()
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
-
-        // CB-11197 We still need to update LayoutParams to force status bar
-        // to be hidden when entering e.g. text fields
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private void setStatusBarBackgroundColor(final String colorPref) {
