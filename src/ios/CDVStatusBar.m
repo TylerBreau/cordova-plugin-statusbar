@@ -196,6 +196,11 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     }
 }
 
+- (CGFloat) getStatusBarHeight
+{
+    return [[UIApplication sharedApplication] statusBarFrame].size.height;
+}
+
 - (void) initializeStatusBarBackgroundView
 {
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
