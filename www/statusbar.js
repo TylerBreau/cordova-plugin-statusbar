@@ -95,6 +95,9 @@ var StatusBar = {
         StatusBar.isVisible = true;
     }
 
+    getStatusBarHeight: function(success, fail) {
+        exec(success, fail, "StatusBar", "getStatusBarHeight", []);
+    }
 };
 
 // prime it. setTimeout so that proxy gets time to init
