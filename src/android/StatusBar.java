@@ -104,7 +104,7 @@ public class StatusBar extends CordovaPlugin {
             int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
                 //callbackContext.success(context.getResources().getDimensionPixelSize(resourceId));
-                callbackContext.success(Math.ceil(activity.getResources().getDimension(resourceId) / activity.getResources().getDisplayMetrics().density));
+                callbackContext.success((int)Math.ceil(activity.getResources().getDimension(resourceId) / activity.getResources().getDisplayMetrics().density));
             }
     
             return true;
