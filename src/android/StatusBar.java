@@ -175,8 +175,10 @@ public class StatusBar extends CordovaPlugin {
                     public void run() {
                         try {
                             setStatusBarTransparent(args.getBoolean(0));
+                            callbackContext.success();
                         } catch (JSONException ignore) {
                             LOG.e(TAG, "Invalid boolean argument");
+                            callbackContext.error("Invalid boolean argument");
                         }
                     }
                 });

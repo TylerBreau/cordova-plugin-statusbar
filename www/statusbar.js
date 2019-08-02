@@ -44,8 +44,8 @@ var StatusBar = {
 
     isVisible: true,
 
-    overlaysWebView: function (doOverlay) {
-        exec(null, null, "StatusBar", "overlaysWebView", [doOverlay]);
+    overlaysWebView: function (doOverlay, success, fail) {
+        exec(success, fail, "StatusBar", "overlaysWebView", [doOverlay]);
     },
 
     styleDefault: function () {
